@@ -6,7 +6,7 @@ import { useSite } from '../context/SiteContext';
 import Header from '../components/Header';
 
 export default function Contact() {
-  const { contact, logo } = useSite();
+  const { contact } = useSite();
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

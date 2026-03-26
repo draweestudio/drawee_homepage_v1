@@ -8,7 +8,7 @@ import Header from '../components/Header';
 export default function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { projects, logo } = useSite();
+  const { projects } = useSite();
   
   const projectIndex = projects.findIndex((p: any) => String(p.id) === String(id));
   const project = projects[projectIndex];

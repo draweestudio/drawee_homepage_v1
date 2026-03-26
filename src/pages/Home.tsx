@@ -6,7 +6,7 @@ import { useSite } from '../context/SiteContext';
 import Header from '../components/Header';
 
 export default function Home() {
-  const { projects, logo, contact } = useSite();
+  const { projects, contact } = useSite();
   const [activeCategory, setActiveCategory] = useState('All work');
 
   const categories = ['All work', ...Array.from(new Set(projects.map((p: any) => p.category).filter(Boolean)))];

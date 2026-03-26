@@ -6,7 +6,7 @@ import { useSite } from '../context/SiteContext';
 import Header from '../components/Header';
 
 export default function About() {
-  const { about, logo, contact } = useSite();
+  const { about, contact } = useSite();
 
   const getSocialIcon = (platform: string) => {
     switch (platform.toLowerCase()) {

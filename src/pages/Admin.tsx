@@ -300,7 +300,7 @@ export default function Admin() {
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full z-10">
         <div className="p-6 border-b border-gray-200 flex items-center gap-2">
-          {logo ? <img src={logo} alt="Logo" className="h-6" /> : <span className="text-2xl font-bold tracking-tighter">drawee</span>}
+          {logo ? <img src={logo} alt="Logo" className="h-6 w-auto object-contain brightness-0" /> : <span className="text-2xl font-bold tracking-tighter">drawee</span>}
           <span className="text-sm font-normal text-gray-500">Admin</span>
         </div>
         
@@ -615,7 +615,7 @@ export default function Admin() {
               <h2 className="text-lg font-semibold mb-6">메인 로고 설정</h2>
               <div className="space-y-4">
                 <div className="p-6 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center min-h-[120px]">
-                  {logo ? <img src={logo} alt="Current Logo" className="h-10" /> : <span className="text-4xl font-bold tracking-tighter">drawee</span>}
+                  {logo ? <img src={logo} alt="Current Logo" className="h-10 w-auto object-contain brightness-0" /> : <span className="text-4xl font-bold tracking-tighter">drawee</span>}
                 </div>
                 <label className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white border border-gray-300 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-50 transition-colors">
                   <Upload className="w-4 h-4" /> SVG 로고 업로드
