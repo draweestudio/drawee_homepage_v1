@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { PORTFOLIO_DATA } from '../constants';
+import { db } from '../firebase';
+import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 
 export const defaultAbout = {
   title: "우리는 사람들의 기억에 남는\n디지털 경험을 만듭니다.",
@@ -37,32 +39,47 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
   const [about, setAbout] = useState(defaultAbout);
   const [contact, setContact] = useState(defaultContact);
   const [theme, setTheme] = useState(defaultTheme);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const savedLogo = localStorage.getItem('drawee_logo');
-    if (savedLogo) setLogo(savedLogo);
+    const docRef = doc(db, 'site', 'data');
     
-    const savedProjects = localStorage.getItem('drawee_projects');
-    if (savedProjects) setProjects(JSON.parse(savedProjects));
-
-    const savedAbout = localStorage.getItem('drawee_about');
-    if (savedAbout) setAbout(JSON.parse(savedAbout));
-
-    const savedContact = localStorage.getItem('drawee_contact');
-    if (savedContact) {
-      const parsed = JSON.parse(savedContact);
-      if (!parsed.socials) {
-        parsed.socials = [
-          { id: '1', platform: 'Instagram', url: parsed.instagram || 'https://instagram.com' },
-          { id: '2', platform: 'Twitter', url: parsed.twitter || 'https://twitter.com' },
-          { id: '3', platform: 'Behance', url: parsed.behance || 'https://behance.net' }
-        ];
+    // Initialize default data if it doesn't exist
+    const initData = async () => {
+      try {
+        const docSnap = await getDoc(docRef);
+        if (!docSnap.exists()) {
+          await setDoc(docRef, {
+            logo: null,
+            projects: PORTFOLIO_DATA,
+            about: defaultAbout,
+            contact: defaultContact,
+            theme: defaultTheme
+          });
+        }
+      } catch (error) {
+        console.error("Error initializing data:", error);
       }
-      setContact(parsed);
-    }
+    };
+    initData();
 
-    const savedTheme = localStorage.getItem('drawee_theme');
-    if (savedTheme) setTheme(JSON.parse(savedTheme));
+    // Listen for real-time updates
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.logo !== undefined) setLogo(data.logo);
+        if (data.projects) setProjects(data.projects);
+        if (data.about) setAbout(data.about);
+        if (data.contact) setContact(data.contact);
+        if (data.theme) setTheme(data.theme);
+      }
+      setIsLoading(false);
+    }, (error) => {
+      console.error("Firestore Error: ", error);
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -75,31 +92,21 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
     document.documentElement.style.setProperty('--about-text-color', theme.aboutTextColor);
   }, [theme]);
 
-  const updateLogo = (newLogo: string | null) => { 
-    setLogo(newLogo); 
-    if(newLogo) localStorage.setItem('drawee_logo', newLogo); 
-    else localStorage.removeItem('drawee_logo');
-  };
-  
-  const updateProjects = (newProjects: any) => { 
-    setProjects(newProjects); 
-    localStorage.setItem('drawee_projects', JSON.stringify(newProjects)); 
-  };
-  
-  const updateAbout = (newAbout: any) => { 
-    setAbout(newAbout); 
-    localStorage.setItem('drawee_about', JSON.stringify(newAbout)); 
-  };
-  
-  const updateContact = (newContact: any) => { 
-    setContact(newContact); 
-    localStorage.setItem('drawee_contact', JSON.stringify(newContact)); 
+  const updateData = async (field: string, value: any) => {
+    try {
+      const docRef = doc(db, 'site', 'data');
+      await setDoc(docRef, { [field]: value }, { merge: true });
+    } catch (error) {
+      console.error(`Error updating ${field}:`, error);
+      throw error;
+    }
   };
 
-  const updateTheme = (newTheme: any) => {
-    setTheme(newTheme);
-    localStorage.setItem('drawee_theme', JSON.stringify(newTheme));
-  };
+  const updateLogo = (newLogo: string | null) => updateData('logo', newLogo);
+  const updateProjects = (newProjects: any) => updateData('projects', newProjects);
+  const updateAbout = (newAbout: any) => updateData('about', newAbout);
+  const updateContact = (newContact: any) => updateData('contact', newContact);
+  const updateTheme = (newTheme: any) => updateData('theme', newTheme);
 
   return (
     <SiteContext.Provider value={{ 
@@ -107,7 +114,8 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
       projects, updateProjects, 
       about, updateAbout, 
       contact, updateContact,
-      theme, updateTheme
+      theme, updateTheme,
+      isLoading
     }}>
       {children}
     </SiteContext.Provider>

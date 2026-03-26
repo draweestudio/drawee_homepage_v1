@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Check if the user is an authenticated admin
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == "jkim0000018@gmail.com";
+    }
+
+    match /site/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

@@ -14,12 +14,14 @@ import {
   ArrowLeft,
   Save,
   Upload,
-  GripVertical
+  GripVertical,
+  Loader2
 } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 
-import { auth } from '../firebase';
+import { auth, storage } from '../firebase';
 import { signOut } from 'firebase/auth';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const hexToRgb = (hex: string) => {
   let r = 0, g = 0, b = 0;
@@ -217,40 +219,55 @@ export default function Admin() {
     setDraggedIndex(null);
   };
 
-  // Base64 Image Upload Handler
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, field: string, index?: number) => {
+  const [isUploading, setIsUploading] = useState(false);
+
+  // Firebase Storage Image Upload Handler
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: string, index?: number) => {
     const file = e.target.files?.[0];
     if (!file) return;
     
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const base64 = event.target?.result as string;
+    setIsUploading(true);
+    try {
+      const fileRef = ref(storage, `projects/${Date.now()}_${file.name}`);
+      await uploadBytes(fileRef, file);
+      const url = await getDownloadURL(fileRef);
+      
       if (field === 'image') {
-        setEditingProject({ ...editingProject, image: base64 });
+        setEditingProject({ ...editingProject, image: url });
       } else if (field === 'contentImages' && typeof index === 'number') {
         const newImages = [...(editingProject.contentImages || [])];
-        newImages[index] = base64;
+        newImages[index] = url;
         setEditingProject({ ...editingProject, contentImages: newImages });
       }
-    };
-    reader.readAsDataURL(file);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("이미지 업로드에 실패했습니다.");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   // --- Logo Upload Handler ---
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.type !== 'image/svg+xml') {
       alert('SVG 파일만 업로드 가능합니다.');
       return;
     }
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (event.target?.result) {
-        updateLogo(event.target.result as string);
-      }
-    };
-    reader.readAsDataURL(file);
+    
+    setIsUploading(true);
+    try {
+      const fileRef = ref(storage, `site/${Date.now()}_${file.name}`);
+      await uploadBytes(fileRef, file);
+      const url = await getDownloadURL(fileRef);
+      updateLogo(url);
+    } catch (error) {
+      console.error("Error uploading logo:", error);
+      alert("로고 업로드에 실패했습니다.");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   // --- Pages Handlers ---
@@ -342,7 +359,13 @@ export default function Admin() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">
+      <main className="flex-1 ml-64 p-8 relative">
+        {isUploading && (
+          <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-50 flex flex-col items-center justify-center">
+            <Loader2 className="w-8 h-8 animate-spin text-black mb-4" />
+            <p className="text-sm font-medium text-gray-900">이미지 업로드 중...</p>
+          </div>
+        )}
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold text-gray-900">
             {activeTab === 'dashboard' && '대시보드'}
