@@ -5,6 +5,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import ProjectDetail from './pages/ProjectDetail';
 import { SiteProvider } from './context/SiteContext';
+import AdminLogin from './components/AdminLogin';
 
 export default function App() {
   return (
@@ -15,7 +16,11 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/work/:id" element={<ProjectDetail />} />
-          <Route path="/admin/*" element={<Admin />} />
+          <Route path="/admin/*" element={
+            <AdminLogin>
+              <Admin />
+            </AdminLogin>
+          } />
         </Routes>
       </Router>
     </SiteProvider>

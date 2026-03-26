@@ -18,6 +18,9 @@ import {
 } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 
+import { auth } from '../firebase';
+import { signOut } from 'firebase/auth';
+
 const hexToRgb = (hex: string) => {
   let r = 0, g = 0, b = 0;
   if (hex.length === 4) {
@@ -283,6 +286,15 @@ export default function Admin() {
     alert('테마 색상이 저장되었습니다.');
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      window.location.href = '/';
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans text-gray-900">
       {/* Sidebar */}
@@ -319,10 +331,13 @@ export default function Admin() {
           </button>
         </nav>
 
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-gray-200 space-y-2">
           <Link to="/" className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
-            <LogOut className="w-5 h-5" /> 사이트로 돌아가기
+            <ArrowLeft className="w-5 h-5" /> 사이트로 돌아가기
           </Link>
+          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
+            <LogOut className="w-5 h-5" /> 로그아웃
+          </button>
         </div>
       </aside>
 

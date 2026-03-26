@@ -40,7 +40,6 @@ export default function Home() {
           <a href="/#work" className="hover:opacity-60 transition-opacity">Work</a>
           <Link to="/about" className="hover:opacity-60 transition-opacity">About</Link>
           <Link to="/contact" className="hover:opacity-60 transition-opacity">Contact</Link>
-          <Link to="/admin" className="hover:opacity-60 transition-opacity ml-4 border-l border-white/30 pl-4">Admin</Link>
         </nav>
       </header>
 
