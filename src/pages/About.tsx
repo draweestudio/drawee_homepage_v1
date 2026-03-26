@@ -1,11 +1,26 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { Instagram, Twitter, Mail, ArrowUpRight } from 'lucide-react';
+import { Instagram, Twitter, Mail, ArrowUpRight, Facebook, Linkedin, Youtube, Github, Dribbble, Figma, Link as LinkIcon } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 
 export default function About() {
-  const { about, logo } = useSite();
+  const { about, logo, contact } = useSite();
+
+  const getSocialIcon = (platform: string) => {
+    switch (platform.toLowerCase()) {
+      case 'instagram': return <Instagram className="w-5 h-5" />;
+      case 'twitter': return <Twitter className="w-5 h-5" />;
+      case 'facebook': return <Facebook className="w-5 h-5" />;
+      case 'linkedin': return <Linkedin className="w-5 h-5" />;
+      case 'youtube': return <Youtube className="w-5 h-5" />;
+      case 'github': return <Github className="w-5 h-5" />;
+      case 'dribbble': return <Dribbble className="w-5 h-5" />;
+      case 'figma': return <Figma className="w-5 h-5" />;
+      case 'mail': return <Mail className="w-5 h-5" />;
+      default: return <LinkIcon className="w-5 h-5" />;
+    }
+  };
 
   return (
     <div className="min-h-screen selection:bg-white selection:text-black" style={{ backgroundColor: 'var(--about-bg-color)', color: 'var(--about-text-color)' }}>
@@ -74,11 +89,15 @@ export default function About() {
         </div>
         
         <div className="flex flex-col md:items-end gap-6">
-          <div className="flex gap-4">
-            <a href="#" className="p-2 border rounded-full transition-colors" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}><Instagram className="w-5 h-5" /></a>
-            <a href="#" className="p-2 border rounded-full transition-colors" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}><Twitter className="w-5 h-5" /></a>
-            <a href="#" className="p-2 border rounded-full transition-colors" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}><Mail className="w-5 h-5" /></a>
-          </div>
+          {contact.socials && contact.socials.length > 0 && (
+            <div className="flex gap-4">
+              {contact.socials.map((social: any) => (
+                <a key={social.id} href={social.url} target="_blank" rel="noreferrer" className="p-2 border rounded-full transition-colors hover:opacity-70" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }} aria-label={social.platform}>
+                  {getSocialIcon(social.platform)}
+                </a>
+              ))}
+            </div>
+          )}
           <p className="text-sm font-secondary" style={{ color: 'color-mix(in srgb, var(--about-text-color) 50%, transparent)' }}>
             &copy; {new Date().getFullYear()} drawee studio. All rights reserved.
           </p>

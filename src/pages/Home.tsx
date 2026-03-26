@@ -125,13 +125,15 @@ export default function Home() {
         </div>
         
         <div className="flex flex-col md:items-end gap-6">
-          <div className="flex gap-4">
-            {contact.socials?.map((social: any) => (
-              <a key={social.id} href={social.url} target="_blank" rel="noreferrer" className="p-2 border border-gray-200 rounded-full hover:bg-primary hover:text-bg transition-colors" aria-label={social.platform}>
-                {getSocialIcon(social.platform)}
-              </a>
-            ))}
-          </div>
+          {contact.socials && contact.socials.length > 0 && (
+            <div className="flex gap-4">
+              {contact.socials.map((social: any) => (
+                <a key={social.id} href={social.url} target="_blank" rel="noreferrer" className="p-2 border border-gray-200 rounded-full hover:bg-primary hover:text-bg transition-colors" aria-label={social.platform}>
+                  {getSocialIcon(social.platform)}
+                </a>
+              ))}
+            </div>
+          )}
           <p className="text-sm text-secondary font-secondary">
             &copy; {new Date().getFullYear()} drawee studio. All rights reserved.
           </p>
