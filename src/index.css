@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: var(--bg-color);
+  --color-text: var(--text-color);
+  --color-primary: var(--primary-color);
+  --color-secondary: var(--secondary-color);
+  --color-accent: var(--accent-color);
+  --color-about-bg: var(--about-bg-color);
+  --color-about-text: var(--about-text-color);
+  --font-sans: var(--font-primary);
+  --font-secondary: var(--font-secondary);
+}
+
+:root {
+  /* ==========================================================================
+     테마 커스터마이징 가이드 (Theme Customization Guide)
+     ==========================================================================
+     관리자는 아래의 CSS 변수 값을 변경하여 웹사이트의 전체적인 디자인을 쉽게 수정할 수 있습니다.
+  */
+
+  /* 1. 색상 (Colors) */
+  --bg-color: #ffffff; /* 배경색 (Background Color) */
+  --text-color: #111111; /* 기본 텍스트 색상 (Primary Text Color) */
+  --primary-color: #000000; /* 주요 강조 색상 (Primary Accent Color) */
+  --secondary-color: #666666; /* 보조 텍스트 색상 (Secondary Text Color) */
+  --accent-color: #FF4500; /* 포인트 색상 (Highlight/Accent Color) */
+  --about-bg-color: #050505; /* About 페이지 배경색 */
+  --about-text-color: #ffffff; /* About 페이지 텍스트 색상 */
+
+  /* 2. 폰트 (Typography) */
+  /* 기본 폰트: Pretendard (한국어에 최적화된 모던 산세리프 폰트) */
+  --font-primary: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  
+  /* 영문 포인트 폰트: Inter */
+  --font-secondary: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

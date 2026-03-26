@@ -1,0 +1,90 @@
+import React from 'react';
+import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
+import { Instagram, Twitter, Mail, ArrowUpRight } from 'lucide-react';
+import { useSite } from '../context/SiteContext';
+
+export default function About() {
+  const { about, logo } = useSite();
+
+  return (
+    <div className="min-h-screen selection:bg-white selection:text-black" style={{ backgroundColor: 'var(--about-bg-color)', color: 'var(--about-text-color)' }}>
+      {/* Header */}
+      <header className="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference" style={{ color: 'var(--about-text-color)' }}>
+        <Link to="/" className="flex items-center">
+          {logo ? <img src={logo} alt="drawee" className="h-6 md:h-8" /> : <span className="text-2xl font-semibold tracking-tighter">drawee</span>}
+        </Link>
+        <nav className="hidden md:flex gap-8 text-sm font-medium">
+          <Link to="/#work" className="hover:opacity-60 transition-opacity">Work</Link>
+          <Link to="/about" className="hover:opacity-60 transition-opacity">About</Link>
+          <Link to="/contact" className="hover:opacity-60 transition-opacity">Contact</Link>
+          <Link to="/admin" className="hover:opacity-60 transition-opacity ml-4 border-l border-white/30 pl-4">Admin</Link>
+        </nav>
+      </header>
+
+      <main className="pt-40 pb-20 px-6 md:px-10 max-w-[1800px] mx-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-5xl"
+        >
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight mb-12 whitespace-pre-line">
+            {about.title}
+          </h1>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mt-24">
+            <div>
+              <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Our Approach</h2>
+              <p className="font-light leading-relaxed text-lg whitespace-pre-line" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+                {about.description}
+              </p>
+            </div>
+            <div>
+              <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Services</h2>
+              <ul className="font-light leading-relaxed text-lg space-y-2" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+                {about.services.split(',').map((service: string, idx: number) => (
+                  <li key={idx}>{service.trim()}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-32">
+            {about.clients && about.clients.trim() !== '' && (
+              <>
+                <h2 className="text-xl font-medium mb-8 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Selected Clients</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 font-secondary text-lg" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+                  {about.clients.split(',').map((client: string, idx: number) => (
+                    <span key={idx}>{client.trim()}</span>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </motion.div>
+      </main>
+
+      {/* Footer */}
+      <footer id="contact" className="px-6 md:px-10 py-12 border-t max-w-[1800px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-10 mt-20" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 10%, transparent)' }}>
+        <div>
+          <h2 className="text-3xl md:text-5xl font-medium mb-6">Let's work together.</h2>
+          <a href="mailto:hello@drawee.studio" className="text-lg md:text-xl border-b pb-1 transition-colors inline-flex items-center gap-2" style={{ borderColor: 'var(--about-text-color)' }}>
+            hello@drawee.studio <ArrowUpRight className="w-5 h-5" />
+          </a>
+        </div>
+        
+        <div className="flex flex-col md:items-end gap-6">
+          <div className="flex gap-4">
+            <a href="#" className="p-2 border rounded-full transition-colors" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}><Instagram className="w-5 h-5" /></a>
+            <a href="#" className="p-2 border rounded-full transition-colors" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}><Twitter className="w-5 h-5" /></a>
+            <a href="#" className="p-2 border rounded-full transition-colors" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}><Mail className="w-5 h-5" /></a>
+          </div>
+          <p className="text-sm font-secondary" style={{ color: 'color-mix(in srgb, var(--about-text-color) 50%, transparent)' }}>
+            &copy; {new Date().getFullYear()} drawee studio. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
