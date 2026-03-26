@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Instagram, Twitter, Mail, ArrowUpRight, Facebook, Linkedin, Youtube, Github, Dribbble, Figma, Link as LinkIcon } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
+import Header from '../components/Header';
 
 export default function About() {
   const { about, logo, contact } = useSite();
@@ -25,16 +26,7 @@ export default function About() {
   return (
     <div className="min-h-screen selection:bg-white selection:text-black" style={{ backgroundColor: 'var(--about-bg-color)', color: 'var(--about-text-color)' }}>
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference" style={{ color: 'var(--about-text-color)' }}>
-        <Link to="/" className="flex items-center">
-          {logo ? <img src={logo} alt="drawee" className="h-6 md:h-8" /> : <span className="text-2xl font-semibold tracking-tighter">drawee</span>}
-        </Link>
-        <nav className="hidden md:flex gap-8 text-sm font-medium">
-          <Link to="/#work" className="hover:opacity-60 transition-opacity">Work</Link>
-          <Link to="/about" className="hover:opacity-60 transition-opacity">About</Link>
-          <Link to="/contact" className="hover:opacity-60 transition-opacity">Contact</Link>
-        </nav>
-      </header>
+      <Header style={{ color: 'var(--about-text-color)' }} className="" />
 
       <main className="pt-40 pb-20 px-6 md:px-10 max-w-[1800px] mx-auto">
         <motion.div 

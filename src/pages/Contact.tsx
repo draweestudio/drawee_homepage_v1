@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Instagram, Twitter, Mail, ArrowUpRight } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
+import Header from '../components/Header';
 
 export default function Contact() {
   const { contact, logo } = useSite();
@@ -37,16 +38,7 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-bg text-text selection:bg-primary selection:text-bg">
       {/* Header */}
-      <header className="fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference text-white">
-        <Link to="/" className="flex items-center">
-          {logo ? <img src={logo} alt="drawee" className="h-6 md:h-8" /> : <span className="text-2xl font-semibold tracking-tighter">drawee</span>}
-        </Link>
-        <nav className="hidden md:flex gap-8 text-sm font-medium">
-          <Link to="/#work" className="hover:opacity-60 transition-opacity">Work</Link>
-          <Link to="/about" className="hover:opacity-60 transition-opacity">About</Link>
-          <Link to="/contact" className="hover:opacity-60 transition-opacity">Contact</Link>
-        </nav>
-      </header>
+      <Header />
 
       <main className="pt-40 pb-20 px-6 md:px-10 max-w-[1800px] mx-auto">
         <motion.div
