@@ -170,7 +170,7 @@ export default function Admin() {
     } else {
       updateProjects([editingProject, ...projects]);
     }
-    setEditingProject(null);
+    alert('저장되었습니다.');
   };
 
   const handleDeleteProject = (id: string, e: React.MouseEvent) => {

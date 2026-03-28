@@ -111,8 +111,8 @@ export default function Home() {
       <footer id="contact" className="px-6 md:px-10 py-12 border-t border-gray-200 max-w-[1800px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
         <div>
           <h2 className="text-3xl md:text-5xl font-medium mb-6">Let's work together.</h2>
-          <a href="mailto:hello@drawee.studio" className="text-lg md:text-xl border-b border-primary pb-1 hover:text-secondary hover:border-secondary transition-colors inline-flex items-center gap-2">
-            hello@drawee.studio <ArrowUpRight className="w-5 h-5" />
+          <a href={`mailto:${contact.email}`} className="text-lg md:text-xl border-b border-primary pb-1 hover:text-secondary hover:border-secondary transition-colors inline-flex items-center gap-2">
+            {contact.email} <ArrowUpRight className="w-5 h-5" />
           </a>
         </div>
         
