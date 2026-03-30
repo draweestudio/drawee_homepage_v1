@@ -93,32 +93,6 @@ export default function ProjectDetail() {
 
         {/* Project Images */}
         <section className="space-y-6 md:space-y-10 max-w-[1800px] mx-auto px-6 md:px-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {project.image ? (
-              isVideo(project.image) ? (
-                <video 
-                  src={project.image} 
-                  autoPlay loop muted playsInline 
-                  className="w-full aspect-video object-cover bg-gray-100"
-                />
-              ) : (
-                <img 
-                  src={project.image} 
-                  alt={`${project.title} main`} 
-                  className="w-full aspect-video object-cover bg-gray-100"
-                  referrerPolicy="no-referrer"
-                />
-              )
-            ) : (
-              <div className="w-full aspect-video bg-gray-100"></div>
-            )}
-          </motion.div>
-          
           {project.contentImages?.map((img: string, idx: number) => (
             <motion.div
               key={idx}
