@@ -12,7 +12,7 @@ const isVideo = (url?: string) => {
 };
 
 export default function Home() {
-  const { projects, contact } = useSite();
+  const { projects, contact, home } = useSite();
   const [activeCategory, setActiveCategory] = useState('All work');
 
   const categories = ['All work', ...Array.from(new Set(projects.map((p: any) => p.category).filter(Boolean)))];
@@ -49,12 +49,11 @@ export default function Home() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-4xl"
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight mb-6">
-            본질에 집중하는<br />
-            미니멀 디자인 스튜디오.
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight mb-6 whitespace-pre-line">
+            {home.title}
           </h1>
-          <p className="text-lg md:text-xl text-secondary max-w-2xl font-light leading-relaxed">
-            drawee(드로이)는 불필요한 요소를 덜어내고, 브랜드의 진정한 가치를 시각적으로 전달합니다. 우리는 디지털과 아날로그의 경계를 허무는 경험을 디자인합니다.
+          <p className="text-lg md:text-xl text-secondary max-w-2xl font-light leading-relaxed whitespace-pre-line">
+            {home.description}
           </p>
         </motion.div>
       </section>

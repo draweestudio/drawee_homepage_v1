@@ -3,6 +3,11 @@ import { PORTFOLIO_DATA } from '../constants';
 import { db } from '../firebase';
 import { doc, onSnapshot, setDoc, getDoc } from 'firebase/firestore';
 
+export const defaultHome = {
+  title: "본질에 집중하는\n미니멀 디자인 스튜디오.",
+  description: "drawee(드로이)는 불필요한 요소를 덜어내고, 브랜드의 진정한 가치를 시각적으로 전달합니다. 우리는 디지털과 아날로그의 경계를 허무는 경험을 디자인합니다."
+};
+
 export const defaultAbout = {
   title: "우리는 사람들의 기억에 남는\n디지털 경험을 만듭니다.",
   description: "drawee(드로이)는 단순한 시각적 아름다움을 넘어, 브랜드의 본질을 탐구하고 사용자에게 의미 있는 경험을 제공하는 디자인 스튜디오입니다. 우리는 복잡한 문제를 가장 단순하고 직관적인 형태로 풀어냅니다.",
@@ -36,6 +41,7 @@ export const SiteContext = createContext<any>(null);
 export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
   const [logo, setLogo] = useState<string | null>(null);
   const [projects, setProjects] = useState(PORTFOLIO_DATA);
+  const [home, setHome] = useState(defaultHome);
   const [about, setAbout] = useState(defaultAbout);
   const [contact, setContact] = useState(defaultContact);
   const [theme, setTheme] = useState(defaultTheme);
@@ -52,6 +58,7 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
           await setDoc(docRef, {
             logo: null,
             projects: PORTFOLIO_DATA,
+            home: defaultHome,
             about: defaultAbout,
             contact: defaultContact,
             theme: defaultTheme
@@ -69,6 +76,7 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
         const data = docSnap.data();
         if (data.logo !== undefined) setLogo(data.logo);
         if (data.projects) setProjects(data.projects);
+        if (data.home) setHome(data.home);
         if (data.about) setAbout(data.about);
         if (data.contact) setContact(data.contact);
         if (data.theme) setTheme(data.theme);
@@ -104,6 +112,7 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
 
   const updateLogo = (newLogo: string | null) => updateData('logo', newLogo);
   const updateProjects = (newProjects: any) => updateData('projects', newProjects);
+  const updateHome = (newHome: any) => updateData('home', newHome);
   const updateAbout = (newAbout: any) => updateData('about', newAbout);
   const updateContact = (newContact: any) => updateData('contact', newContact);
   const updateTheme = (newTheme: any) => updateData('theme', newTheme);
@@ -112,6 +121,7 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
     <SiteContext.Provider value={{ 
       logo, updateLogo, 
       projects, updateProjects, 
+      home, updateHome,
       about, updateAbout, 
       contact, updateContact,
       theme, updateTheme,

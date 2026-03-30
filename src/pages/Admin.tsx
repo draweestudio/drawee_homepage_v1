@@ -123,6 +123,7 @@ export default function Admin() {
   const { 
     logo, updateLogo, 
     projects, updateProjects, 
+    home, updateHome,
     about, updateAbout, 
     contact, updateContact,
     theme, updateTheme
@@ -137,7 +138,8 @@ export default function Admin() {
   const filteredAdminProjects = adminCategoryFilter === 'All' ? projects : projects.filter((p: any) => p.category === adminCategoryFilter);
   
   // Pages Tab State
-  const [activePageTab, setActivePageTab] = useState('about');
+  const [activePageTab, setActivePageTab] = useState('home');
+  const [homeForm, setHomeForm] = useState(home);
   const [aboutForm, setAboutForm] = useState(about);
   const [contactForm, setContactForm] = useState(contact);
 
@@ -285,6 +287,11 @@ export default function Admin() {
   };
 
   // --- Pages Handlers ---
+  const handleSaveHome = () => {
+    updateHome(homeForm);
+    alert('Home 페이지가 저장되었습니다.');
+  };
+
   const handleSaveAbout = () => {
     updateAbout(aboutForm);
     alert('About 페이지가 저장되었습니다.');
@@ -384,7 +391,7 @@ export default function Admin() {
           <h1 className="text-2xl font-bold text-gray-900">
             {activeTab === 'dashboard' && '대시보드'}
             {activeTab === 'projects' && (editingProject ? '포트폴리오 수정' : '포트폴리오 관리')}
-            {activeTab === 'pages' && '페이지 관리 (About / Contact)'}
+            {activeTab === 'pages' && '페이지 관리 (Home / About / Contact)'}
             {activeTab === 'settings' && '설정 및 테마'}
           </h1>
         </header>
@@ -564,6 +571,9 @@ export default function Admin() {
         {activeTab === 'pages' && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
             <div className="flex border-b border-gray-200">
+              <button onClick={() => setActivePageTab('home')} className={`flex-1 py-4 text-sm font-medium transition-colors ${activePageTab === 'home' ? 'border-b-2 border-black text-black' : 'text-gray-500 hover:text-gray-700'}`}>
+                Home 페이지
+              </button>
               <button onClick={() => setActivePageTab('about')} className={`flex-1 py-4 text-sm font-medium transition-colors ${activePageTab === 'about' ? 'border-b-2 border-black text-black' : 'text-gray-500 hover:text-gray-700'}`}>
                 About 페이지
               </button>
@@ -573,6 +583,20 @@ export default function Admin() {
             </div>
 
             <div className="p-6">
+              {activePageTab === 'home' && (
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">메인 헤드 텍스트 (줄바꿈은 엔터)</label>
+                    <textarea rows={3} value={homeForm.title} onChange={(e) => setHomeForm({...homeForm, title: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">서브 텍스트 (Description)</label>
+                    <textarea rows={4} value={homeForm.description} onChange={(e) => setHomeForm({...homeForm, description: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
+                  </div>
+                  <button onClick={handleSaveHome} className="w-full bg-black text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">Home 내용 저장</button>
+                </div>
+              )}
+
               {activePageTab === 'about' && (
                 <div className="space-y-6">
                   <div>
