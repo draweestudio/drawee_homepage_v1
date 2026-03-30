@@ -132,10 +132,19 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState('projects');
   const [editingProject, setEditingProject] = useState<any>(null);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [draggedProjectIndex, setDraggedProjectIndex] = useState<number | null>(null);
   const [adminCategoryFilter, setAdminCategoryFilter] = useState('All');
   
+  const [localProjects, setLocalProjects] = useState(projects);
+
+  useEffect(() => {
+    if (draggedProjectIndex === null) {
+      setLocalProjects(projects);
+    }
+  }, [projects, draggedProjectIndex]);
+
   const adminCategories = ['All', ...Array.from(new Set(projects.map((p: any) => p.category).filter(Boolean)))];
-  const filteredAdminProjects = adminCategoryFilter === 'All' ? projects : projects.filter((p: any) => p.category === adminCategoryFilter);
+  const filteredAdminProjects = adminCategoryFilter === 'All' ? localProjects : localProjects.filter((p: any) => p.category === adminCategoryFilter);
   
   // Pages Tab State
   const [activePageTab, setActivePageTab] = useState('home');
@@ -227,6 +236,39 @@ export default function Admin() {
 
   const handleDragEnd = () => {
     setDraggedIndex(null);
+  };
+
+  // --- Project Reordering Handlers ---
+  const handleProjectDragStart = (e: React.DragEvent, index: number) => {
+    if (adminCategoryFilter !== 'All') {
+      e.preventDefault();
+      return;
+    }
+    setDraggedProjectIndex(index);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', index.toString());
+  };
+
+  const handleProjectDragEnter = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (adminCategoryFilter !== 'All') return;
+    if (draggedProjectIndex === null || draggedProjectIndex === index) return;
+    
+    const newProjects = [...localProjects];
+    const draggedProject = newProjects[draggedProjectIndex];
+    
+    newProjects.splice(draggedProjectIndex, 1);
+    newProjects.splice(index, 0, draggedProject);
+    
+    setDraggedProjectIndex(index);
+    setLocalProjects(newProjects);
+  };
+
+  const handleProjectDragEnd = () => {
+    if (draggedProjectIndex !== null) {
+      updateProjects(localProjects);
+    }
+    setDraggedProjectIndex(null);
   };
 
   const [isUploading, setIsUploading] = useState(false);
@@ -420,6 +462,7 @@ export default function Admin() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-gray-50 border-b border-gray-200 text-sm text-gray-500">
+                    <th className="p-4 font-medium w-10"></th>
                     <th className="p-4 font-medium">썸네일</th>
                     <th className="p-4 font-medium">프로젝트명</th>
                     <th className="p-4 font-medium">카테고리</th>
@@ -427,8 +470,23 @@ export default function Admin() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredAdminProjects.map((project: any) => (
-                    <tr key={project.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                  {filteredAdminProjects.map((project: any, index: number) => (
+                    <tr 
+                      key={project.id} 
+                      draggable={adminCategoryFilter === 'All'}
+                      onDragStart={(e) => handleProjectDragStart(e, index)}
+                      onDragEnter={(e) => handleProjectDragEnter(e, index)}
+                      onDragEnd={handleProjectDragEnd}
+                      onDragOver={(e) => e.preventDefault()}
+                      className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${draggedProjectIndex === index ? 'opacity-50 bg-gray-100' : ''}`}
+                    >
+                      <td className="p-4 text-gray-400">
+                        {adminCategoryFilter === 'All' && (
+                          <div className="cursor-grab active:cursor-grabbing hover:text-black">
+                            <GripVertical className="w-5 h-5" />
+                          </div>
+                        )}
+                      </td>
                       <td className="p-4">
                         {project.image ? (
                           <img src={project.image} alt={project.title} className="w-16 h-10 object-cover rounded bg-gray-200" />
