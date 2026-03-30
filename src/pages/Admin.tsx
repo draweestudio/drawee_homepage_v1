@@ -23,6 +23,12 @@ import { auth, storage } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
+const isVideo = (url?: string) => {
+  if (!url) return false;
+  const lowerUrl = url.toLowerCase();
+  return lowerUrl.includes('.mp4') || lowerUrl.includes('.webm') || lowerUrl.includes('.mov');
+};
+
 const hexToRgb = (hex: string) => {
   let r = 0, g = 0, b = 0;
   if (hex.length === 4) {
@@ -478,7 +484,7 @@ export default function Admin() {
                   <h3 className="text-sm font-semibold text-gray-900 mb-3">메인 썸네일 이미지</h3>
                   <div className="mb-3">
                     {editingProject.image ? (
-                      editingProject.image.includes('.mp4') ? (
+                      isVideo(editingProject.image) ? (
                         <video src={editingProject.image} autoPlay loop muted playsInline className="w-full aspect-video object-cover rounded-lg border border-gray-200 bg-white" />
                       ) : (
                         <img src={editingProject.image} alt="Thumbnail preview" className="w-full aspect-video object-cover rounded-lg border border-gray-200 bg-white" />
@@ -489,7 +495,7 @@ export default function Admin() {
                   </div>
                   <label className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-50 transition-colors">
                     <Upload className="w-4 h-4" /> 내 컴퓨터에서 첨부
-                    <input type="file" accept="image/*,video/mp4" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} />
+                    <input type="file" accept="image/*,video/mp4,video/quicktime,video/webm" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} />
                   </label>
                 </div>
 
@@ -516,7 +522,7 @@ export default function Admin() {
                           <GripVertical className="w-4 h-4" />
                         </div>
                         {img ? (
-                          img.includes('.mp4') ? (
+                          isVideo(img) ? (
                             <video src={img} autoPlay loop muted playsInline className="w-full aspect-video object-cover rounded border border-gray-100 mb-2" />
                           ) : (
                             <img src={img} alt={`Detail ${index}`} className="w-full aspect-video object-cover rounded border border-gray-100 mb-2" />
@@ -527,7 +533,7 @@ export default function Admin() {
                         <div className="flex gap-2">
                           <label className="flex-1 flex items-center justify-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-medium cursor-pointer hover:bg-gray-100 transition-colors">
                             <Upload className="w-3 h-3" /> 변경
-                            <input type="file" accept="image/*,video/mp4" className="hidden" onChange={(e) => handleImageUpload(e, 'contentImages', index)} />
+                            <input type="file" accept="image/*,video/mp4,video/quicktime,video/webm" className="hidden" onChange={(e) => handleImageUpload(e, 'contentImages', index)} />
                           </label>
                           <button onClick={() => handleRemoveDetailImage(index)} className="px-3 py-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-xs font-medium hover:bg-red-100 transition-colors">
                             삭제

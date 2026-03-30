@@ -5,6 +5,12 @@ import { Instagram, Twitter, Mail, ArrowUpRight, Facebook, Linkedin, Youtube, Gi
 import { useSite } from '../context/SiteContext';
 import Header from '../components/Header';
 
+const isVideo = (url?: string) => {
+  if (!url) return false;
+  const lowerUrl = url.toLowerCase();
+  return lowerUrl.includes('.mp4') || lowerUrl.includes('.webm') || lowerUrl.includes('.mov');
+};
+
 export default function Home() {
   const { projects, contact } = useSite();
   const [activeCategory, setActiveCategory] = useState('All work');
@@ -84,7 +90,7 @@ export default function Home() {
               <Link to={`/work/${project.id}`} className="group cursor-pointer block">
                 <div className="overflow-hidden bg-gray-100 aspect-video mb-6">
                   {project.image ? (
-                    project.image.includes('.mp4') ? (
+                    isVideo(project.image) ? (
                       <video 
                         src={project.image} 
                         autoPlay loop muted playsInline 

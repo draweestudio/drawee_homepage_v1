@@ -5,6 +5,12 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 import Header from '../components/Header';
 
+const isVideo = (url?: string) => {
+  if (!url) return false;
+  const lowerUrl = url.toLowerCase();
+  return lowerUrl.includes('.mp4') || lowerUrl.includes('.webm') || lowerUrl.includes('.mov');
+};
+
 export default function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -94,7 +100,7 @@ export default function ProjectDetail() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             {project.image ? (
-              project.image.includes('.mp4') ? (
+              isVideo(project.image) ? (
                 <video 
                   src={project.image} 
                   autoPlay loop muted playsInline 
@@ -122,7 +128,7 @@ export default function ProjectDetail() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               {img ? (
-                img.includes('.mp4') ? (
+                isVideo(img) ? (
                   <video 
                     src={img} 
                     autoPlay loop muted playsInline 
