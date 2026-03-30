@@ -68,23 +68,23 @@ export default function ProjectDetail() {
                 </p>
               </div>
               <div className="space-y-6">
-                <div>
+                <div className={!project.client ? "invisible" : ""}>
                   <h3 className="text-sm font-medium text-gray-400 mb-1">Client</h3>
-                  <p className="text-base">{project.client}</p>
+                  <p className="text-base">{project.client || 'Empty'}</p>
                 </div>
-                <div>
+                <div className={!project.role ? "invisible" : ""}>
                   <h3 className="text-sm font-medium text-gray-400 mb-1">Role</h3>
-                  <p className="text-base">{project.role}</p>
+                  <p className="text-base">{project.role || 'Empty'}</p>
                 </div>
               </div>
               <div className="space-y-6">
-                <div>
+                <div className={!project.category ? "invisible" : ""}>
                   <h3 className="text-sm font-medium text-gray-400 mb-1">Category</h3>
-                  <p className="text-base">{project.category}</p>
+                  <p className="text-base">{project.category || 'Empty'}</p>
                 </div>
-                <div>
+                <div className={!project.year ? "invisible" : ""}>
                   <h3 className="text-sm font-medium text-gray-400 mb-1">Year</h3>
-                  <p className="text-base font-secondary">{project.year}</p>
+                  <p className="text-base font-secondary">{project.year || 'Empty'}</p>
                 </div>
               </div>
             </div>

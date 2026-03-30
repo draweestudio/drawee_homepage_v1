@@ -29,7 +29,7 @@ export default function Header({ style, className = "text-white" }: { style?: Re
   return (
     <>
       <header className={`fixed top-0 left-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference ${className}`} style={style}>
-        <Link to="/" className="flex items-center relative z-50" onClick={() => setIsMenuOpen(false)}>
+        <Link to="/" className="flex items-center relative z-50" onClick={() => { setIsMenuOpen(false); window.scrollTo(0, 0); }}>
           {logo ? <img src={logo} alt="drawee" className="h-6 md:h-8 w-auto object-contain brightness-0 invert" /> : <span className="text-2xl font-semibold tracking-tighter">drawee</span>}
         </Link>
         

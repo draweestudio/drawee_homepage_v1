@@ -162,6 +162,8 @@ export default function Admin() {
       id: Date.now().toString(),
       title: '',
       category: '',
+      client: '',
+      role: '',
       year: new Date().getFullYear().toString(),
       description: '',
       image: '',
@@ -328,10 +330,10 @@ export default function Admin() {
     <div className="min-h-screen bg-gray-50 flex font-sans text-gray-900">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full z-10">
-        <div className="p-6 border-b border-gray-200 flex items-center gap-2">
+        <Link to="/" className="p-6 border-b border-gray-200 flex items-center gap-2 hover:bg-gray-50 transition-colors">
           {logo ? <img src={logo} alt="Logo" className="h-6 w-auto object-contain brightness-0" /> : <span className="text-2xl font-bold tracking-tighter">drawee</span>}
           <span className="text-sm font-normal text-gray-500">Admin</span>
-        </div>
+        </Link>
         
         <nav className="flex-1 p-4 space-y-1">
           <button 
@@ -470,6 +472,16 @@ export default function Admin() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">연도</label>
                     <input type="text" value={editingProject.year} onChange={(e) => setEditingProject({...editingProject, year: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">클라이언트</label>
+                    <input type="text" value={editingProject.client || ''} onChange={(e) => setEditingProject({...editingProject, client: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">역할 (Role)</label>
+                    <input type="text" value={editingProject.role || ''} onChange={(e) => setEditingProject({...editingProject, role: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
                   </div>
                 </div>
                 <div>
