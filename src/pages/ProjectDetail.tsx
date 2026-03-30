@@ -94,12 +94,20 @@ export default function ProjectDetail() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             {project.image ? (
-              <img 
-                src={project.image} 
-                alt={`${project.title} main`} 
-                className="w-full aspect-video object-cover bg-gray-100"
-                referrerPolicy="no-referrer"
-              />
+              project.image.includes('.mp4') ? (
+                <video 
+                  src={project.image} 
+                  autoPlay loop muted playsInline 
+                  className="w-full aspect-video object-cover bg-gray-100"
+                />
+              ) : (
+                <img 
+                  src={project.image} 
+                  alt={`${project.title} main`} 
+                  className="w-full aspect-video object-cover bg-gray-100"
+                  referrerPolicy="no-referrer"
+                />
+              )
             ) : (
               <div className="w-full aspect-video bg-gray-100"></div>
             )}
@@ -114,12 +122,20 @@ export default function ProjectDetail() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               {img ? (
-                <img 
-                  src={img} 
-                  alt={`${project.title} detail ${idx + 1}`} 
-                  className="w-full aspect-video object-cover bg-gray-100"
-                  referrerPolicy="no-referrer"
-                />
+                img.includes('.mp4') ? (
+                  <video 
+                    src={img} 
+                    autoPlay loop muted playsInline 
+                    className="w-full aspect-video object-cover bg-gray-100"
+                  />
+                ) : (
+                  <img 
+                    src={img} 
+                    alt={`${project.title} detail ${idx + 1}`} 
+                    className="w-full aspect-video object-cover bg-gray-100"
+                    referrerPolicy="no-referrer"
+                  />
+                )
               ) : (
                 <div className="w-full aspect-video bg-gray-100"></div>
               )}

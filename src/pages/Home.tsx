@@ -84,12 +84,20 @@ export default function Home() {
               <Link to={`/work/${project.id}`} className="group cursor-pointer block">
                 <div className="overflow-hidden bg-gray-100 aspect-video mb-6">
                   {project.image ? (
-                    <img 
-                      src={project.image} 
-                      alt={project.title} 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
+                    project.image.includes('.mp4') ? (
+                      <video 
+                        src={project.image} 
+                        autoPlay loop muted playsInline 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    ) : (
+                      <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        referrerPolicy="no-referrer"
+                      />
+                    )
                   ) : (
                     <div className="w-full h-full bg-gray-200 transition-transform duration-700 group-hover:scale-105"></div>
                   )}
