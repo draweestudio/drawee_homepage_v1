@@ -18,16 +18,11 @@ import {
   Loader2
 } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
+import MediaDisplay from '../components/MediaDisplay';
 
 import { auth, storage } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-
-const isVideo = (url?: string) => {
-  if (!url) return false;
-  const lowerUrl = url.toLowerCase();
-  return lowerUrl.includes('.mp4') || lowerUrl.includes('.webm') || lowerUrl.includes('.mov');
-};
 
 const hexToRgb = (hex: string) => {
   let r = 0, g = 0, b = 0;
@@ -489,7 +484,7 @@ export default function Admin() {
                       </td>
                       <td className="p-4">
                         {project.image ? (
-                          <img src={project.image} alt={project.title} className="w-16 h-10 object-cover rounded bg-gray-200" />
+                          <MediaDisplay url={project.image} alt={project.title} className="w-16 h-10 object-cover rounded bg-gray-200 pointer-events-none" />
                         ) : (
                           <div className="w-16 h-10 rounded bg-gray-200"></div>
                         )}
@@ -558,28 +553,36 @@ export default function Admin() {
               <div className="space-y-8">
                 {/* Thumbnail Image Upload */}
                 <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-3">메인 썸네일 이미지</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">메인 썸네일 이미지/동영상</h3>
                   <div className="mb-3">
                     {editingProject.image ? (
-                      isVideo(editingProject.image) ? (
-                        <video src={editingProject.image} autoPlay loop muted playsInline className="w-full aspect-video object-cover rounded-lg border border-gray-200 bg-white" />
-                      ) : (
-                        <img src={editingProject.image} alt="Thumbnail preview" className="w-full aspect-video object-cover rounded-lg border border-gray-200 bg-white" />
-                      )
+                      <MediaDisplay url={editingProject.image} alt="Thumbnail preview" className="w-full aspect-video object-cover rounded-lg border border-gray-200 bg-white pointer-events-none" />
                     ) : (
                       <div className="w-full aspect-video bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 text-sm">이미지 없음</div>
                     )}
                   </div>
-                  <label className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-50 transition-colors">
-                    <Upload className="w-4 h-4" /> 내 컴퓨터에서 첨부
-                    <input type="file" accept="image/*,video/mp4,video/quicktime,video/webm" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} />
-                  </label>
+                  <div className="space-y-3">
+                    <label className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-50 transition-colors">
+                      <Upload className="w-4 h-4" /> 내 컴퓨터에서 첨부
+                      <input type="file" accept="image/*,video/mp4,video/quicktime,video/webm" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} />
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-gray-500 whitespace-nowrap">또는 링크 입력:</span>
+                      <input 
+                        type="text" 
+                        placeholder="Vimeo, YouTube 또는 이미지 URL" 
+                        value={editingProject.image || ''} 
+                        onChange={(e) => setEditingProject({...editingProject, image: e.target.value})} 
+                        className="flex-1 px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 {/* Detail Images Upload */}
                 <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
                   <div className="flex justify-between items-center mb-3">
-                    <h3 className="text-sm font-semibold text-gray-900">상세 본문 이미지</h3>
+                    <h3 className="text-sm font-semibold text-gray-900">상세 본문 이미지/동영상</h3>
                     <button onClick={handleAddDetailImage} className="text-xs font-medium text-blue-600 hover:text-blue-800 flex items-center gap-1">
                       <Plus className="w-3 h-3" /> 빈 슬롯 추가
                     </button>
@@ -599,22 +602,31 @@ export default function Admin() {
                           <GripVertical className="w-4 h-4" />
                         </div>
                         {img ? (
-                          isVideo(img) ? (
-                            <video src={img} autoPlay loop muted playsInline className="w-full aspect-video object-cover rounded border border-gray-100 mb-2" />
-                          ) : (
-                            <img src={img} alt={`Detail ${index}`} className="w-full aspect-video object-cover rounded border border-gray-100 mb-2" />
-                          )
+                          <MediaDisplay url={img} alt={`Detail ${index}`} className="w-full aspect-video object-cover rounded border border-gray-100 mb-2 pointer-events-none" />
                         ) : (
                           <div className="w-full aspect-video bg-gray-100 rounded border border-gray-200 mb-2 flex items-center justify-center text-gray-400 text-sm">이미지 없음</div>
                         )}
-                        <div className="flex gap-2">
-                          <label className="flex-1 flex items-center justify-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-medium cursor-pointer hover:bg-gray-100 transition-colors">
-                            <Upload className="w-3 h-3" /> 변경
-                            <input type="file" accept="image/*,video/mp4,video/quicktime,video/webm" className="hidden" onChange={(e) => handleImageUpload(e, 'contentImages', index)} />
-                          </label>
-                          <button onClick={() => handleRemoveDetailImage(index)} className="px-3 py-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-xs font-medium hover:bg-red-100 transition-colors">
-                            삭제
-                          </button>
+                        <div className="space-y-2">
+                          <div className="flex gap-2">
+                            <label className="flex-1 flex items-center justify-center gap-2 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded text-xs font-medium cursor-pointer hover:bg-gray-100 transition-colors">
+                              <Upload className="w-3 h-3" /> 파일 첨부
+                              <input type="file" accept="image/*,video/mp4,video/quicktime,video/webm" className="hidden" onChange={(e) => handleImageUpload(e, 'contentImages', index)} />
+                            </label>
+                            <button onClick={() => handleRemoveDetailImage(index)} className="px-3 py-1.5 bg-red-50 text-red-600 border border-red-100 rounded text-xs font-medium hover:bg-red-100 transition-colors">
+                              삭제
+                            </button>
+                          </div>
+                          <input 
+                            type="text" 
+                            placeholder="또는 외부 링크 입력 (Vimeo 등)" 
+                            value={img || ''} 
+                            onChange={(e) => {
+                              const newImages = [...(editingProject.contentImages || [])];
+                              newImages[index] = e.target.value;
+                              setEditingProject({...editingProject, contentImages: newImages});
+                            }} 
+                            className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-black"
+                          />
                         </div>
                       </div>
                     ))}

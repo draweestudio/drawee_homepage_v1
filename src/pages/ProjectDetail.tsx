@@ -4,12 +4,7 @@ import { motion } from 'motion/react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 import Header from '../components/Header';
-
-const isVideo = (url?: string) => {
-  if (!url) return false;
-  const lowerUrl = url.toLowerCase();
-  return lowerUrl.includes('.mp4') || lowerUrl.includes('.webm') || lowerUrl.includes('.mov');
-};
+import MediaDisplay from '../components/MediaDisplay';
 
 export default function ProjectDetail() {
   const { id } = useParams();
@@ -102,20 +97,7 @@ export default function ProjectDetail() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               {img ? (
-                isVideo(img) ? (
-                  <video 
-                    src={img} 
-                    autoPlay loop muted playsInline 
-                    className="w-full aspect-video object-cover bg-gray-100"
-                  />
-                ) : (
-                  <img 
-                    src={img} 
-                    alt={`${project.title} detail ${idx + 1}`} 
-                    className="w-full aspect-video object-cover bg-gray-100"
-                    referrerPolicy="no-referrer"
-                  />
-                )
+                <MediaDisplay url={img} alt={`${project.title} detail ${idx + 1}`} className="w-full aspect-video object-cover bg-gray-100" />
               ) : (
                 <div className="w-full aspect-video bg-gray-100"></div>
               )}

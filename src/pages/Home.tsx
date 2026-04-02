@@ -4,12 +4,7 @@ import { Link } from 'react-router-dom';
 import { Instagram, Twitter, Mail, ArrowUpRight, Facebook, Linkedin, Youtube, Github, Dribbble, Figma, Link as LinkIcon } from 'lucide-react';
 import { useSite } from '../context/SiteContext';
 import Header from '../components/Header';
-
-const isVideo = (url?: string) => {
-  if (!url) return false;
-  const lowerUrl = url.toLowerCase();
-  return lowerUrl.includes('.mp4') || lowerUrl.includes('.webm') || lowerUrl.includes('.mov');
-};
+import MediaDisplay from '../components/MediaDisplay';
 
 export default function Home() {
   const { projects, contact, home } = useSite();
@@ -89,20 +84,7 @@ export default function Home() {
               <Link to={`/work/${project.id}`} className="group cursor-pointer block">
                 <div className="overflow-hidden bg-gray-100 aspect-video mb-6">
                   {project.image ? (
-                    isVideo(project.image) ? (
-                      <video 
-                        src={project.image} 
-                        autoPlay loop muted playsInline 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                    ) : (
-                      <img 
-                        src={project.image} 
-                        alt={project.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        referrerPolicy="no-referrer"
-                      />
-                    )
+                    <MediaDisplay url={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 pointer-events-none" pointerEventsNone={true} />
                   ) : (
                     <div className="w-full h-full bg-gray-200 transition-transform duration-700 group-hover:scale-105"></div>
                   )}
