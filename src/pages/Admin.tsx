@@ -129,6 +129,7 @@ export default function Admin() {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [draggedProjectIndex, setDraggedProjectIndex] = useState<number | null>(null);
   const [adminCategoryFilter, setAdminCategoryFilter] = useState('All');
+  const [linkInputs, setLinkInputs] = useState<Record<number, string>>({});
   
   const [localProjects, setLocalProjects] = useState(projects);
 
@@ -161,6 +162,7 @@ export default function Admin() {
   // --- Portfolio Handlers ---
   const handleEdit = (project: any) => {
     setEditingProject({ ...project });
+    setLinkInputs({});
   };
 
   const handleAddProject = () => {
@@ -175,6 +177,7 @@ export default function Admin() {
       image: '',
       contentImages: []
     });
+    setLinkInputs({});
   };
 
   const handleSaveProject = () => {
@@ -196,6 +199,7 @@ export default function Admin() {
 
   const handleCancel = () => {
     setEditingProject(null);
+    setLinkInputs({});
   };
 
   const handleAddDetailImage = () => {
@@ -267,6 +271,29 @@ export default function Admin() {
   };
 
   const [isUploading, setIsUploading] = useState(false);
+
+  const handleRegisterLink = (index: number) => {
+    const url = linkInputs[index];
+    if (url === undefined) return;
+
+    if (url.trim() === '') {
+      const newImages = [...(editingProject.contentImages || [])];
+      newImages[index] = '';
+      setEditingProject({...editingProject, contentImages: newImages});
+      alert('링크가 삭제되었습니다.');
+      return;
+    }
+
+    try {
+      new URL(url);
+      const newImages = [...(editingProject.contentImages || [])];
+      newImages[index] = url;
+      setEditingProject({...editingProject, contentImages: newImages});
+      alert('등록되었습니다.');
+    } catch (e) {
+      alert('등록이 실패했습니다. 올바른 URL을 입력해주세요.');
+    }
+  };
 
   // Firebase Storage Image Upload Handler
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: string, index?: number) => {
@@ -553,7 +580,7 @@ export default function Admin() {
               <div className="space-y-8">
                 {/* Thumbnail Image Upload */}
                 <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                  <h3 className="text-sm font-semibold text-gray-900 mb-3">메인 썸네일 이미지/동영상</h3>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-3">메인 썸네일 이미지/동영상 (파일 첨부만 가능)</h3>
                   <div className="mb-3">
                     {editingProject.image ? (
                       <MediaDisplay url={editingProject.image} alt="Thumbnail preview" className="w-full aspect-video object-cover rounded-lg border border-gray-200 bg-white pointer-events-none" />
@@ -561,22 +588,10 @@ export default function Admin() {
                       <div className="w-full aspect-video bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center text-gray-400 text-sm">이미지 없음</div>
                     )}
                   </div>
-                  <div className="space-y-3">
-                    <label className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-50 transition-colors">
-                      <Upload className="w-4 h-4" /> 내 컴퓨터에서 첨부
-                      <input type="file" accept="image/*,video/mp4,video/quicktime,video/webm" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} />
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-gray-500 whitespace-nowrap">또는 링크 입력:</span>
-                      <input 
-                        type="text" 
-                        placeholder="Vimeo, YouTube 또는 이미지 URL" 
-                        value={editingProject.image || ''} 
-                        onChange={(e) => setEditingProject({...editingProject, image: e.target.value})} 
-                        className="flex-1 px-3 py-1.5 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-black"
-                      />
-                    </div>
-                  </div>
+                  <label className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium cursor-pointer hover:bg-gray-50 transition-colors">
+                    <Upload className="w-4 h-4" /> 내 컴퓨터에서 첨부
+                    <input type="file" accept="image/*,video/mp4,video/quicktime,video/webm" className="hidden" onChange={(e) => handleImageUpload(e, 'image')} />
+                  </label>
                 </div>
 
                 {/* Detail Images Upload */}
@@ -616,17 +631,21 @@ export default function Admin() {
                               삭제
                             </button>
                           </div>
-                          <input 
-                            type="text" 
-                            placeholder="또는 외부 링크 입력 (Vimeo 등)" 
-                            value={img || ''} 
-                            onChange={(e) => {
-                              const newImages = [...(editingProject.contentImages || [])];
-                              newImages[index] = e.target.value;
-                              setEditingProject({...editingProject, contentImages: newImages});
-                            }} 
-                            className="w-full px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-black"
-                          />
+                          <div className="flex items-center gap-2">
+                            <input 
+                              type="text" 
+                              placeholder="또는 외부 링크 입력 (Vimeo 등)" 
+                              value={linkInputs[index] !== undefined ? linkInputs[index] : (img || '')} 
+                              onChange={(e) => setLinkInputs({...linkInputs, [index]: e.target.value})} 
+                              className="flex-1 px-2 py-1.5 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-black"
+                            />
+                            <button 
+                              onClick={() => handleRegisterLink(index)}
+                              className="px-3 py-1.5 bg-black text-white rounded text-xs font-medium hover:bg-gray-800 transition-colors whitespace-nowrap"
+                            >
+                              등록
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}

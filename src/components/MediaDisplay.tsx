@@ -15,11 +15,11 @@ export const isEmbed = (url?: string) => {
 export const getEmbedUrl = (url: string) => {
   if (url.includes('vimeo.com')) {
     const match = url.match(/vimeo\.com\/(?:video\/)?([0-9]+)/);
-    if (match) return `https://player.vimeo.com/video/${match[1]}?background=1&autoplay=1&loop=1&byline=0&title=0`;
+    if (match) return `https://player.vimeo.com/video/${match[1]}?autoplay=1&loop=1&muted=1&controls=1&title=0&byline=0&portrait=0`;
   }
   if (url.includes('youtube.com') || url.includes('youtu.be')) {
     const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
-    if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1&loop=1&controls=0&playlist=${match[1]}`;
+    if (match) return `https://www.youtube.com/embed/${match[1]}?autoplay=1&mute=1&loop=1&controls=1&playlist=${match[1]}`;
   }
   return url;
 };
