@@ -23,6 +23,21 @@ export default function About() {
     }
   };
 
+  const renderFormattedText = (text: string) => {
+    if (!text) return null;
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={i} className="font-medium" style={{ color: 'var(--about-text-color)' }}>{part.slice(2, -2)}</strong>;
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
+
+  const servicesList = about.services.includes('\n') 
+    ? about.services.split('\n') 
+    : about.services.split(',');
+
   return (
     <div className="min-h-screen selection:bg-white selection:text-black" style={{ backgroundColor: 'var(--about-bg-color)', color: 'var(--about-text-color)' }}>
       {/* Header */}
@@ -49,8 +64,10 @@ export default function About() {
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Services</h2>
               <ul className="font-light leading-relaxed text-lg space-y-2" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
-                {about.services.split(',').map((service: string, idx: number) => (
-                  <li key={idx}>{service.trim()}</li>
+                {servicesList.map((service: string, idx: number) => (
+                  <li key={idx} className={service.trim() === '' ? 'h-4' : ''}>
+                    {renderFormattedText(service.trim())}
+                  </li>
                 ))}
               </ul>
             </div>

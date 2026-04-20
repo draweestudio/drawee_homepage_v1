@@ -697,8 +697,8 @@ export default function Admin() {
                     <textarea rows={4} value={aboutForm.description} onChange={(e) => setAboutForm({...aboutForm, description: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">제공 서비스 (Services) - 쉼표(,)로 구분</label>
-                    <input type="text" value={aboutForm.services} onChange={(e) => setAboutForm({...aboutForm, services: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">제공 서비스 (Services) - 줄바꿈(엔터)로 구분, **텍스트** 입력시 굵게 표시</label>
+                    <textarea rows={5} value={aboutForm.services} onChange={(e) => setAboutForm({...aboutForm, services: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">클라이언트 (Clients) - 쉼표(,)로 구분</label>
@@ -713,6 +713,10 @@ export default function Admin() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">메인 타이틀</label>
                     <textarea rows={3} value={contactForm.title} onChange={(e) => setContactForm({...contactForm, title: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">서브 텍스트 (Description)</label>
+                    <textarea rows={3} value={contactForm.description || ''} onChange={(e) => setContactForm({...contactForm, description: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">이메일 주소</label>

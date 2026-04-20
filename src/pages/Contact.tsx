@@ -46,9 +46,14 @@ export default function Contact() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight mb-12 whitespace-pre-line">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight mb-6 whitespace-pre-line">
             {contact.title}
           </h1>
+          {contact.description && (
+            <p className="text-lg md:text-xl text-secondary max-w-2xl font-light leading-relaxed whitespace-pre-line mb-12">
+              {contact.description}
+            </p>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-20">
             {/* Contact Info */}

@@ -17,6 +17,7 @@ export const defaultAbout = {
 
 export const defaultContact = {
   title: "새로운 프로젝트를\n기다리고 있습니다.",
+  description: "프로젝트에 대한 아이디어나 문의 사항이 있다면 언제든 편하게 연락 주세요.\n더 나은 결과물을 함께 만들어가기를 기대합니다.",
   email: "hello@drawee.studio",
   location: "서울특별시 강남구\n테헤란로 123, 4층\ndrawee studio",
   socials: [
