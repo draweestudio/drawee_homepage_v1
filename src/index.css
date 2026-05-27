@@ -10,6 +10,13 @@
   --color-about-text: var(--about-text-color);
   --font-sans: var(--font-primary);
   --font-secondary: var(--font-secondary);
+
+  /* Page-mode-adaptive gorgeous grays (dynamically contrasts shadows, borders, and accents inside dark/light states) */
+  --color-gray-50: color-mix(in srgb, var(--text-color) 4%, var(--bg-color));
+  --color-gray-100: color-mix(in srgb, var(--text-color) 8%, var(--bg-color));
+  --color-gray-200: color-mix(in srgb, var(--text-color) 15%, var(--bg-color));
+  --color-gray-300: color-mix(in srgb, var(--text-color) 25%, var(--bg-color));
+  --color-gray-400: color-mix(in srgb, var(--text-color) 45%, var(--bg-color));
 }
 
 :root {

@@ -151,12 +151,24 @@ export default function Admin() {
   // Theme State
   const [themeForm, setThemeForm] = useState(theme);
 
-  const handleThemeChange = (field: string, value: string) => {
-    const newTheme = { ...themeForm, [field]: value };
-    setThemeForm(newTheme);
-    // Live preview
-    const cssVar = `--${field.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
-    document.documentElement.style.setProperty(cssVar, value);
+  useEffect(() => {
+    setHomeForm(home);
+  }, [home]);
+
+  useEffect(() => {
+    setAboutForm(about);
+  }, [about]);
+
+  useEffect(() => {
+    setContactForm(contact);
+  }, [contact]);
+
+  useEffect(() => {
+    setThemeForm(theme);
+  }, [theme]);
+
+  const handleThemeChange = (field: string, value: any) => {
+    setThemeForm((prev: any) => ({ ...prev, [field]: value }));
   };
 
   // --- Portfolio Handlers ---
@@ -385,7 +397,7 @@ export default function Admin() {
 
   const handleSaveTheme = () => {
     updateTheme(themeForm);
-    alert('테마 색상이 저장되었습니다.');
+    alert('테마 및 다크/라이트 설정이 저장되었습니다.');
   };
 
   const handleLogout = async () => {
@@ -693,7 +705,7 @@ export default function Admin() {
                     <textarea rows={3} value={aboutForm.title} onChange={(e) => setAboutForm({...aboutForm, title: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">소개글 (Description)</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">소개글 (Description) - **텍스트** 입력시 굵게 표시</label>
                     <textarea rows={4} value={aboutForm.description} onChange={(e) => setAboutForm({...aboutForm, description: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
                   </div>
                   <div>
@@ -803,14 +815,63 @@ export default function Admin() {
             </div>
 
             {/* Theme Settings */}
-            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-              <h2 className="text-lg font-semibold mb-6">테마 색상 설정</h2>
-              <div className="space-y-4">
-                <ColorInput label="기본 배경색" cssVar="--bg-color" value={themeForm.bgColor} onChange={(val) => handleThemeChange('bgColor', val)} />
-                <ColorInput label="기본 텍스트 색상" cssVar="--text-color" value={themeForm.textColor} onChange={(val) => handleThemeChange('textColor', val)} />
-                <ColorInput label="About 배경색" cssVar="--about-bg-color" value={themeForm.aboutBgColor} onChange={(val) => handleThemeChange('aboutBgColor', val)} />
-                <ColorInput label="About 텍스트 색상" cssVar="--about-text-color" value={themeForm.aboutTextColor} onChange={(val) => handleThemeChange('aboutTextColor', val)} />
-                <button onClick={handleSaveTheme} className="w-full bg-black text-white py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors mt-4">테마 색상 저장</button>
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-6 col-span-1 lg:col-span-2">
+              <h2 className="text-lg font-semibold mb-6">테마 및 다크/라이트 설정</h2>
+              
+              {/* page-by-page toggle */}
+              <div className="mb-8">
+                <h3 className="text-sm font-semibold text-gray-900 mb-4 pb-2 border-b border-gray-100">페이지별 다크/라이트 설정</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    { id: 'homeMode', label: '메인 페이지 (Home)' },
+                    { id: 'aboutMode', label: '소개 페이지 (About)' },
+                    { id: 'contactMode', label: '문의 페이지 (Contact)' },
+                    { id: 'projectDetailMode', label: '프로젝트 상세 (Project Detail)' },
+                  ].map((page) => (
+                    <div key={page.id} className="flex justify-between items-center p-3 border border-gray-200 rounded-lg bg-gray-50">
+                      <span className="text-sm font-medium text-gray-700">{page.label}</span>
+                      <div className="flex gap-1.5 bg-gray-200 p-0.5 rounded-lg">
+                        <button 
+                          onClick={() => handleThemeChange(page.id, 'light')}
+                          className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${themeForm[page.id] === 'light' ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-black bg-transparent'}`}
+                        >
+                          라이트
+                        </button>
+                        <button 
+                          onClick={() => handleThemeChange(page.id, 'dark')}
+                          className={`px-3 py-1 text-xs font-semibold rounded-md transition-all ${themeForm[page.id] === 'dark' ? 'bg-white text-black shadow-sm' : 'text-gray-500 hover:text-black bg-transparent'}`}
+                        >
+                          다크
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* detailed coloring configs */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Light Theme Config */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-gray-900 pb-2 border-b border-gray-100">라이트 모드 색상 설정</h3>
+                  <ColorInput label="배경색" cssVar="--light-bg-color" value={themeForm.lightBgColor || '#ffffff'} onChange={(val) => handleThemeChange('lightBgColor', val)} />
+                  <ColorInput label="기본 텍스트 색상" cssVar="--light-text-color" value={themeForm.lightTextColor || '#111111'} onChange={(val) => handleThemeChange('lightTextColor', val)} />
+                  <ColorInput label="핵심 브랜드 색상" cssVar="--light-primary-color" value={themeForm.lightPrimaryColor || '#000000'} onChange={(val) => handleThemeChange('lightPrimaryColor', val)} />
+                  <ColorInput label="보조 텍스트 색상" cssVar="--light-secondary-color" value={themeForm.lightSecondaryColor || '#666666'} onChange={(val) => handleThemeChange('lightSecondaryColor', val)} />
+                </div>
+
+                {/* Dark Theme Config */}
+                <div className="space-y-4">
+                  <h3 className="text-sm font-semibold text-gray-900 pb-2 border-b border-gray-100">다크 모드 색상 설정</h3>
+                  <ColorInput label="배경색" cssVar="--dark-bg-color" value={themeForm.darkBgColor || '#050505'} onChange={(val) => handleThemeChange('darkBgColor', val)} />
+                  <ColorInput label="기본 텍스트 색상" cssVar="--dark-text-color" value={themeForm.darkTextColor || '#ffffff'} onChange={(val) => handleThemeChange('darkTextColor', val)} />
+                  <ColorInput label="핵심 브랜드 색상" cssVar="--dark-primary-color" value={themeForm.darkPrimaryColor || '#ffffff'} onChange={(val) => handleThemeChange('darkPrimaryColor', val)} />
+                  <ColorInput label="보조 텍스트 색상" cssVar="--dark-secondary-color" value={themeForm.darkSecondaryColor || '#999999'} onChange={(val) => handleThemeChange('darkSecondaryColor', val)} />
+                </div>
+              </div>
+
+              <div className="mt-8 pt-4 border-t border-gray-100 flex justify-end">
+                <button onClick={handleSaveTheme} className="px-6 py-2.5 bg-black text-white hover:bg-gray-800 rounded-lg text-sm font-medium transition-colors">테마 및 다크/라이트 설정 저장</button>
               </div>
             </div>
           </motion.div>

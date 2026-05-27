@@ -6,6 +6,7 @@ import Contact from './pages/Contact';
 import ProjectDetail from './pages/ProjectDetail';
 import { SiteProvider, useSite } from './context/SiteContext';
 import AdminLogin from './components/AdminLogin';
+import ThemeManager from './components/ThemeManager';
 import { Loader2 } from 'lucide-react';
 
 function AppContent() {
@@ -21,6 +22,7 @@ function AppContent() {
 
   return (
     <Router>
+      <ThemeManager />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

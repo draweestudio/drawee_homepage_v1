@@ -58,12 +58,12 @@ export default function About() {
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Our Approach</h2>
               <p className="font-light leading-relaxed text-lg whitespace-pre-line" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
-                {about.description}
+                {renderFormattedText(about.description)}
               </p>
             </div>
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Services</h2>
-              <ul className="font-light leading-relaxed text-lg space-y-2" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+              <ul className="font-light leading-relaxed text-lg" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
                 {servicesList.map((service: string, idx: number) => (
                   <li key={idx} className={service.trim() === '' ? 'h-4' : ''}>
                     {renderFormattedText(service.trim())}

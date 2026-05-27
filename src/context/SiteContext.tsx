@@ -28,6 +28,24 @@ export const defaultContact = {
 };
 
 export const defaultTheme = {
+  homeMode: 'light',
+  aboutMode: 'dark', // About default standard mode is dark
+  contactMode: 'light',
+  projectDetailMode: 'light',
+
+  lightBgColor: "#ffffff",
+  lightTextColor: "#111111",
+  lightPrimaryColor: "#000000",
+  lightSecondaryColor: "#666666",
+  lightAccentColor: "#FF4500",
+
+  darkBgColor: "#050505",
+  darkTextColor: "#ffffff",
+  darkPrimaryColor: "#ffffff",
+  darkSecondaryColor: "#999999",
+  darkAccentColor: "#FF4500",
+
+  // Backward compatibility
   bgColor: "#ffffff",
   textColor: "#111111",
   primaryColor: "#000000",
@@ -80,7 +98,7 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
         if (data.home) setHome(data.home);
         if (data.about) setAbout(data.about);
         if (data.contact) setContact(data.contact);
-        if (data.theme) setTheme(data.theme);
+        if (data.theme) setTheme({ ...defaultTheme, ...data.theme });
       }
       setIsLoading(false);
     }, (error) => {
@@ -91,15 +109,7 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
     return () => unsubscribe();
   }, []);
 
-  useEffect(() => {
-    document.documentElement.style.setProperty('--bg-color', theme.bgColor);
-    document.documentElement.style.setProperty('--text-color', theme.textColor);
-    document.documentElement.style.setProperty('--primary-color', theme.primaryColor);
-    document.documentElement.style.setProperty('--secondary-color', theme.secondaryColor);
-    document.documentElement.style.setProperty('--accent-color', theme.accentColor);
-    document.documentElement.style.setProperty('--about-bg-color', theme.aboutBgColor);
-    document.documentElement.style.setProperty('--about-text-color', theme.aboutTextColor);
-  }, [theme]);
+  // Removed old theme-setting useEffect, handled by ThemeManager instead
 
   const updateData = async (field: string, value: any) => {
     try {
