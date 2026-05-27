@@ -63,9 +63,13 @@ export default function About() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mt-24">
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Our Approach</h2>
-              <p className="font-light leading-relaxed text-lg whitespace-pre-line" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
-                {renderFormattedText(about.description)}
-              </p>
+              <div className="font-light leading-relaxed text-lg" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+                {(about.description || '').split('\n').map((line: string, idx: number) => (
+                  <p key={idx} className={line.trim() === '' ? 'h-4' : ''}>
+                    {renderFormattedText(line.trim())}
+                  </p>
+                ))}
+              </div>
             </div>
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Services</h2>
