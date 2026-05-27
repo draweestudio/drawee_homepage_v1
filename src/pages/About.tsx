@@ -50,7 +50,7 @@ export default function About() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-5xl"
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight mb-12 whitespace-pre-line">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.25] tracking-tight mb-12 whitespace-pre-line">
             {about.title}
           </h1>
           

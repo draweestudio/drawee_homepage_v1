@@ -52,7 +52,7 @@ export default function ProjectDetail() {
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight mb-12 md:mb-20">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.25] tracking-tight mb-12 md:mb-20">
               {project.title}
             </h1>
             

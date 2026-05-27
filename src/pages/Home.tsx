@@ -44,7 +44,7 @@ export default function Home() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-4xl"
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.1] tracking-tight mb-6 whitespace-pre-line">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.25] tracking-tight mb-6 whitespace-pre-line">
             {home.title}
           </h1>
           <p className="text-lg md:text-xl text-secondary max-w-2xl font-light leading-relaxed whitespace-pre-line">
