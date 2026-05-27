@@ -56,14 +56,14 @@ export default function Home() {
       {/* Portfolio Grid */}
       <section id="work" className="px-6 md:px-10 pb-32 max-w-[1800px] mx-auto">
         {/* Category Filter */}
-        <div className="flex flex-wrap gap-2 md:gap-4 mb-12">
+        <div className="flex flex-wrap gap-2 md:gap-3 mb-10">
           {categories.map((category: any) => (
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
                 activeCategory === category 
-                  ? 'bg-primary text-bg shadow-md' 
+                  ? 'bg-primary text-bg shadow-sm' 
                   : 'bg-transparent text-secondary hover:text-primary border border-gray-200 hover:border-gray-400'
               }`}
             >

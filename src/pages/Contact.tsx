@@ -59,7 +59,7 @@ export default function Contact() {
             {/* Contact Info */}
             <div className="space-y-12">
               <div>
-                <h2 className="text-sm font-medium text-secondary mb-4 uppercase tracking-wider">Email</h2>
+                <h2 className="text-xl font-medium text-text mb-4">Email</h2>
                 <a href={`mailto:${contact.email}`} className="text-2xl md:text-3xl font-medium hover:text-secondary transition-colors inline-flex items-center gap-2">
                   {contact.email} <ArrowUpRight className="w-6 h-6" />
                 </a>
@@ -68,7 +68,7 @@ export default function Contact() {
               <div>
                 {contact.location && contact.location.trim() !== '' && (
                   <>
-                    <h2 className="text-sm font-medium text-secondary mb-4 uppercase tracking-wider">Location</h2>
+                    <h2 className="text-xl font-medium text-text mb-4">Location</h2>
                     <p className="text-xl leading-relaxed whitespace-pre-line">
                       {contact.location}
                     </p>
@@ -79,7 +79,7 @@ export default function Contact() {
               <div>
                 {contact.socials && contact.socials.length > 0 && (
                   <>
-                    <h2 className="text-sm font-medium text-secondary mb-4 uppercase tracking-wider">Social</h2>
+                    <h2 className="text-xl font-medium text-text mb-4">Social</h2>
                     <div className="flex gap-6 flex-wrap">
                       {contact.socials.map((social: any) => (
                         <a key={social.id} href={social.url} target="_blank" rel="noreferrer" className="text-lg hover:text-secondary transition-colors">
@@ -94,7 +94,7 @@ export default function Contact() {
 
             {/* Contact Form */}
             <div className="bg-gray-50 p-8 md:p-12 rounded-2xl">
-              <h2 className="text-2xl font-medium mb-8">프로젝트 문의하기</h2>
+              <h2 className="text-xl font-medium mb-8">프로젝트 문의하기</h2>
               <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label className="block text-sm font-medium mb-2">이름 / 회사명</label>
