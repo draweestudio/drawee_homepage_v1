@@ -69,7 +69,7 @@ export default function About() {
             </div>
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Services</h2>
-              <ul className="font-light leading-relaxed text-lg space-y-1" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+              <ul className="font-light leading-relaxed text-lg" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
                 {servicesList.map((service: string, idx: number) => (
                   <li key={idx} className={service.trim() === '' ? 'h-4' : ''}>
                     {renderFormattedText(service.trim())}
@@ -79,7 +79,7 @@ export default function About() {
             </div>
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Process</h2>
-              <ul className="font-light leading-relaxed text-lg space-y-1" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+              <ul className="font-light leading-relaxed text-lg" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
                 {processList.map((proc: string, idx: number) => (
                   <li key={idx} className={proc.trim() === '' ? 'h-4' : ''}>
                     {renderFormattedText(proc.trim())}
