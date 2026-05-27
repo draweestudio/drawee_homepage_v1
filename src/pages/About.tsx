@@ -34,9 +34,13 @@ export default function About() {
     });
   };
 
-  const servicesList = about.services.includes('\n') 
-    ? about.services.split('\n') 
-    : about.services.split(',');
+  const servicesList = (about.services || '').includes('\n') 
+    ? (about.services || '').split('\n') 
+    : (about.services || '').split(',');
+
+  const processList = (about.process || '').includes('\n') 
+    ? (about.process || '').split('\n') 
+    : (about.process || '').split(',');
 
   return (
     <div className="min-h-screen selection:bg-white selection:text-black" style={{ backgroundColor: 'var(--about-bg-color)', color: 'var(--about-text-color)' }}>
@@ -48,13 +52,15 @@ export default function About() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-5xl"
+          className="w-full"
         >
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.25] tracking-tight mb-12 whitespace-pre-line">
-            {about.title}
-          </h1>
+          <div className="max-w-6xl">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[1.25] tracking-tight mb-12 whitespace-pre-line">
+              {about.title}
+            </h1>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 mt-24">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mt-24">
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Our Approach</h2>
               <p className="font-light leading-relaxed text-lg whitespace-pre-line" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
@@ -63,10 +69,20 @@ export default function About() {
             </div>
             <div>
               <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Services</h2>
-              <ul className="font-light leading-relaxed text-lg" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+              <ul className="font-light leading-relaxed text-lg space-y-1" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
                 {servicesList.map((service: string, idx: number) => (
                   <li key={idx} className={service.trim() === '' ? 'h-4' : ''}>
                     {renderFormattedText(service.trim())}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <h2 className="text-xl font-medium mb-6 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Process</h2>
+              <ul className="font-light leading-relaxed text-lg space-y-1" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+                {processList.map((proc: string, idx: number) => (
+                  <li key={idx} className={proc.trim() === '' ? 'h-4' : ''}>
+                    {renderFormattedText(proc.trim())}
                   </li>
                 ))}
               </ul>
@@ -77,7 +93,7 @@ export default function About() {
             {about.clients && about.clients.trim() !== '' && (
               <>
                 <h2 className="text-xl font-medium mb-8 border-b pb-4" style={{ borderColor: 'color-mix(in srgb, var(--about-text-color) 20%, transparent)' }}>Selected Clients</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 font-secondary text-lg" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 font-secondary text-lg" style={{ color: 'color-mix(in srgb, var(--about-text-color) 70%, transparent)' }}>
                   {about.clients.split(',').map((client: string, idx: number) => (
                     <span key={idx}>{client.trim()}</span>
                   ))}

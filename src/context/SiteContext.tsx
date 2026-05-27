@@ -12,7 +12,8 @@ export const defaultAbout = {
   title: "우리는 사람들의 기억에 남는\n디지털 경험을 만듭니다.",
   description: "drawee(드로이)는 단순한 시각적 아름다움을 넘어, 브랜드의 본질을 탐구하고 사용자에게 의미 있는 경험을 제공하는 디자인 스튜디오입니다. 우리는 복잡한 문제를 가장 단순하고 직관적인 형태로 풀어냅니다.",
   services: "Brand Identity, UI/UX Design, Web Development, Editorial Design, Art Direction",
-  clients: "Samsung, Hyundai, Naver, Kakao, Amorepacific, CJ ENM, Toss, Musinsa"
+  clients: "Samsung, Hyundai, Naver, Kakao, Amorepacific, CJ ENM, Toss, Musinsa",
+  process: "Research & Planning, Concept Development, High-Fidelity Prototyping, Detail Design, Delivery"
 };
 
 export const defaultContact = {
@@ -96,7 +97,7 @@ export const SiteProvider = ({ children }: { children: React.ReactNode }) => {
         if (data.logo !== undefined) setLogo(data.logo);
         if (data.projects) setProjects(data.projects);
         if (data.home) setHome(data.home);
-        if (data.about) setAbout(data.about);
+        if (data.about) setAbout({ ...defaultAbout, ...data.about });
         if (data.contact) setContact(data.contact);
         if (data.theme) setTheme({ ...defaultTheme, ...data.theme });
       }

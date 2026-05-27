@@ -713,6 +713,10 @@ export default function Admin() {
                     <textarea rows={5} value={aboutForm.services} onChange={(e) => setAboutForm({...aboutForm, services: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
                   </div>
                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">진행 과정 (Process) - 줄바꿈(엔터)로 구분, **텍스트** 입력시 굵게 표시</label>
+                    <textarea rows={5} value={aboutForm.process || ''} onChange={(e) => setAboutForm({...aboutForm, process: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"></textarea>
+                  </div>
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">클라이언트 (Clients) - 쉼표(,)로 구분</label>
                     <input type="text" value={aboutForm.clients} onChange={(e) => setAboutForm({...aboutForm, clients: e.target.value})} className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black" />
                   </div>
